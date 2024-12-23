@@ -66,8 +66,20 @@
         WiFi
       </div>
       <div class="card-body">
-        <h5 class="card-title">Dark card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <h5 class="card-title">Settings</h5>
+        <form class="row g-3">
+          <div class="col-md-6">
+            <label for="wifi_ssid" class="form-label">SSID</label>
+            <input type="text" class="form-control" id="wifi_ssid">
+          </div>
+          <div class="col-md-6">
+            <label for="wifi_pass" class="form-label">Password</label>
+            <input type="password" class="form-control" id="wifi_pass">
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
       </div>
     </div>
     <div class="card border-dark mt-4">
@@ -76,8 +88,28 @@
         MQTT
       </div>
       <div class="card-body">
-        <h5 class="card-title">Dark card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <h5 class="card-title">Settings</h5>
+        <form class="row g-3">
+          <div class="col-md-8">
+            <label for="mqtt_host" class="form-label">Hostname</label>
+            <input type="text" class="form-control" id="mqtt_host" placeholder="localhost">
+          </div>
+          <div class="col-md-4">
+            <label for="mqtt_port" class="form-label">Port</label>
+            <input type="number" class="form-control" id="mqtt_port" placeholder="1883">
+          </div>
+          <div class="col-md-6">
+            <label for="mqtt_user" class="form-label">Username</label>
+            <input type="text" class="form-control" id="mqtt_user" placeholder="myuser">
+          </div>
+          <div class="col-md-6">
+            <label for="mqtt_pass" class="form-label">Password</label>
+            <input type="password" class="form-control" id="mqtt_pass" placeholder="mypass">
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
