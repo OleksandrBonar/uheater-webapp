@@ -58,6 +58,7 @@ function connectToDevice(){
         bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         bleStateContainer.style.color = "#24af37";
 
+        connectButton.classList.toggle("visually-hidden");
         disconnectButton.classList.toggle("visually-hidden");
         rebootButton.classList.toggle("visually-hidden");
         
@@ -145,6 +146,7 @@ function disconnectDevice() {
                     bleStateContainer.style.color = "#d13a30";
 
                     connectButton.classList.toggle("visually-hidden");
+                    disconnectButton.classList.toggle("visually-hidden");
                     rebootButton.classList.toggle("visually-hidden");
                 })
                 .catch(error => {
