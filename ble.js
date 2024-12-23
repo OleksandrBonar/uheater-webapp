@@ -55,8 +55,8 @@ function connectToDevice(){
     })
     .then(device => {
         console.log('Device Selected:', device.name);
-        bleStateContainer.innerHTML = 'Connected to device ' + device.name;
-        bleStateContainer.style.color = "#24af37";
+        // bleStateContainer.innerHTML = 'Connected to device ' + device.name;
+        // bleStateContainer.style.color = "#24af37";
 
         connectButton.classList.toggle("visually-hidden");
         disconnectButton.classList.toggle("visually-hidden");
@@ -97,8 +97,8 @@ function connectToDevice(){
 
 function onDisconnected(event){
     console.log('Device Disconnected:', event.target.device.name);
-    bleStateContainer.innerHTML = "Device disconnected";
-    bleStateContainer.style.color = "#d13a30";
+    // bleStateContainer.innerHTML = "Device disconnected";
+    // bleStateContainer.style.color = "#d13a30";
 
     connectToDevice();
 }
@@ -142,8 +142,8 @@ function disconnectDevice() {
                 })
                 .then(() => {
                     console.log("Device Disconnected");
-                    bleStateContainer.innerHTML = "Device Disconnected";
-                    bleStateContainer.style.color = "#d13a30";
+                    // bleStateContainer.innerHTML = "Device Disconnected";
+                    // bleStateContainer.style.color = "#d13a30";
 
                     connectButton.classList.toggle("visually-hidden");
                     disconnectButton.classList.toggle("visually-hidden");
