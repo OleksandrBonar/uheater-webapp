@@ -1,6 +1,7 @@
 // DOM Elements
 const connectButton = document.getElementById('connectBleButton');
 const disconnectButton = document.getElementById('disconnectBleButton');
+const rebootButton = document.getElementById('rebootBleButton');
 const onButton = document.getElementById('onButton');
 const offButton = document.getElementById('offButton');
 const retrievedValue = document.getElementById('valueContainer');
@@ -56,7 +57,12 @@ function connectToDevice(){
         console.log('Device Selected:', device.name);
         bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         bleStateContainer.style.color = "#24af37";
+
+        disconnectButton.classList.toggle("visually-hidden");
+        rebootButton.classList.toggle("visually-hidden");
+        
         device.addEventListener('gattservicedisconnected', onDisconnected);
+        
         return device.gatt.connect();
     })
     .then(gattServer =>{
@@ -138,6 +144,8 @@ function disconnectDevice() {
                     bleStateContainer.innerHTML = "Device Disconnected";
                     bleStateContainer.style.color = "#d13a30";
 
+                    connectButton.classList.toggle("visually-hidden");
+                    rebootButton.classList.toggle("visually-hidden");
                 })
                 .catch(error => {
                     console.log("An error occurred:", error);
