@@ -10,7 +10,7 @@ const timestampContainer = document.getElementById('timestamp');
 
 // Define BLE Device Specs
 var deviceName ='heater';
-var bleService = 'b0eb7b09-a92f-4cd7-a3ef-e009449bb46a';
+var bleService = 'd6d09854-4b2a-48ea-a307-416a2b7269d1';
 var mainModeCharacteristic = '85f369a6-4581-4d30-854f-65d4f9240cc6';
 var ledCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
 var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
