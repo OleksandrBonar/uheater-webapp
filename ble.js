@@ -35,8 +35,8 @@ connectButton.addEventListener('click', (event) => {
 disconnectButton.addEventListener('click', disconnectDevice);
 
 // Write to the ESP32 LED Characteristic
-onButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 1));
-offButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 0));
+// onButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 1));
+// offButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 0));
 
 rebootButton.addEventListener('click', () => writeOnCharacteristic(mainBootCharacteristic, 'Y'));
 
