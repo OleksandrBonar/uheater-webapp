@@ -146,19 +146,14 @@ function disconnectDevice() {
             console.log("No characteristic found to disconnect.");
         }
         
-        bleServer.disconnect()
-            .then(() => {
-                console.log("Device Disconnected");
-                // bleStateContainer.innerHTML = "Device Disconnected";
-                // bleStateContainer.style.color = "#d13a30";
+        bleServer.disconnect();
+        console.log("Device Disconnected");
+        // bleStateContainer.innerHTML = "Device Disconnected";
+        // bleStateContainer.style.color = "#d13a30";
 
-                connectButton.classList.toggle("visually-hidden");
-                disconnectButton.classList.toggle("visually-hidden");
-                rebootButton.classList.toggle("visually-hidden");
-            })
-            .catch(error => {
-                console.log("An error occurred:", error);
-            });
+        connectButton.classList.toggle("visually-hidden");
+        disconnectButton.classList.toggle("visually-hidden");
+        rebootButton.classList.toggle("visually-hidden");
     } else {
         // Throw an error if Bluetooth is not connected
         console.error("Bluetooth is not connected.");
