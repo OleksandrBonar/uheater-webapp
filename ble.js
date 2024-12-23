@@ -11,8 +11,11 @@ const timestampContainer = document.getElementById('timestamp');
 
 // Define BLE Device Specs
 var deviceName ='heater';
+
 var bleService = 'd6d09854-4b2a-48ea-a307-416a2b7269d1';
+var mainBootCharacteristic = '44d8a42d-9720-4adb-878d-5922094b247c';
 var mainModeCharacteristic = '85f369a6-4581-4d30-854f-65d4f9240cc6';
+
 var ledCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
 var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
 
@@ -32,8 +35,10 @@ connectButton.addEventListener('click', (event) => {
 disconnectButton.addEventListener('click', disconnectDevice);
 
 // Write to the ESP32 LED Characteristic
-onButton.addEventListener('click', () => writeOnCharacteristic(1));
-offButton.addEventListener('click', () => writeOnCharacteristic(0));
+onButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 1));
+offButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 0));
+
+rebootButton.addEventListener('click', () => writeOnCharacteristic(mainBootCharacteristic, 'Y'));
 
 // Check if BLE is available in your Browser
 function isWebBluetoothEnabled() {
@@ -95,7 +100,7 @@ function connectToDevice(){
     })
 }
 
-function onDisconnected(event){
+function onDisconnected(event) {
     console.log('Device Disconnected:', event.target.device.name);
     // bleStateContainer.innerHTML = "Device disconnected";
     // bleStateContainer.style.color = "#d13a30";
@@ -110,23 +115,23 @@ function handleCharacteristicChange(event){
     timestampContainer.innerHTML = getDateTime();
 }
 
-function writeOnCharacteristic(value){
+function writeOnCharacteristic(uuid, value) {
     if (bleServer && bleServer.connected) {
-        bleServiceFound.getCharacteristic(ledCharacteristic)
-        .then(characteristic => {
-            console.log("Found the LED characteristic: ", characteristic.uuid);
-            const data = new Uint8Array([value]);
-            return characteristic.writeValue(data);
-        })
-        .then(() => {
-            latestValueSent.innerHTML = value;
-            console.log("Value written to LEDcharacteristic:", value);
-        })
-        .catch(error => {
-            console.error("Error writing to the LED characteristic: ", error);
-        });
+        bleServiceFound.getCharacteristic(uuid)
+            .then(characteristic => {
+                console.log("Found the LED characteristic: ", characteristic.uuid);
+                const data = new Uint8Array([value]);
+                return characteristic.writeValue(data);
+            })
+            .then(() => {
+                latestValueSent.innerHTML = value;
+                console.log("Value written to LEDcharacteristic:", value);
+            })
+            .catch(error => {
+                console.error("Error writing to the LED characteristic: ", error);
+            });
     } else {
-        console.error ("Bluetooth is not connected. Cannot write to characteristic.")
+        console.error("Bluetooth is not connected. Cannot write to characteristic.")
         window.alert("Bluetooth is not connected. Cannot write to characteristic. \n Connect to BLE first!")
     }
 }
