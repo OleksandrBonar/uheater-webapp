@@ -116,19 +116,20 @@ function handleCharacteristicChange(event){
 }
 
 function writeOnCharacteristic(uuid, value) {
+    console.log("writeOnCharacteristic");
     if (bleServer && bleServer.connected) {
         bleServiceFound.getCharacteristic(uuid)
             .then(characteristic => {
-                console.log("Found the LED characteristic: ", characteristic.uuid);
+                console.log("Found the characteristic: ", characteristic.uuid);
                 const data = new Uint8Array([value]);
                 return characteristic.writeValue(data);
             })
             .then(() => {
-                latestValueSent.innerHTML = value;
-                console.log("Value written to LEDcharacteristic:", value);
+                // latestValueSent.innerHTML = value;
+                console.log("Value written to the characteristic:", value);
             })
             .catch(error => {
-                console.error("Error writing to the LED characteristic: ", error);
+                console.error("Error writing to the characteristic: ", error);
             });
     } else {
         console.error("Bluetooth is not connected. Cannot write to characteristic.")
