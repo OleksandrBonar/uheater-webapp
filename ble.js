@@ -12,7 +12,9 @@ const timestampContainer = document.getElementById('timestamp');
 // Define BLE Device Specs
 var deviceName ='heater';
 
-var bleService = 'd6d09854-4b2a-48ea-a307-416a2b7269d1';
+var bleService = 'b0eb7b09-a92f-4cd7-a3ef-e009449bb46a';
+var bleMainService = 'b0eb7b09-a92f-4cd7-a3ef-e009449bb46a';
+var bleStatService = 'd6d09854-4b2a-48ea-a307-416a2b7269d1';
 var mainBootCharacteristic = '44d8a42d-9720-4adb-878d-5922094b247c';
 var mainModeCharacteristic = '85f369a6-4581-4d30-854f-65d4f9240cc6';
 
