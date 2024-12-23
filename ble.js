@@ -5,6 +5,7 @@ const rebootButton = document.getElementById('rebootBleButton');
 const onButton = document.getElementById('onButton');
 const offButton = document.getElementById('offButton');
 const retrievedValue = document.getElementById('valueContainer');
+const mainModeValue = document.getElementById('mainModeContainer');
 const latestValueSent = document.getElementById('valueSent');
 const bleStateContainer = document.getElementById('bleState');
 const timestampContainer = document.getElementById('timestamp');
@@ -25,6 +26,7 @@ var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
 var bleServer;
 var bleServiceFound;
 var sensorCharacteristicFound;
+var mainModeCharacteristicFound;
 
 // Connect Button (search for BLE Devices only if BLE is available)
 connectButton.addEventListener('click', (event) => {
@@ -54,7 +56,7 @@ function isWebBluetoothEnabled() {
 }
 
 // Connect to BLE Device and Enable Notifications
-function connectToDevice(){
+function connectToDevice() {
     console.log('Initializing Bluetooth...');
     navigator.bluetooth.requestDevice({
         filters: [{name: deviceName}],
@@ -73,7 +75,7 @@ function connectToDevice(){
         
         return device.gatt.connect();
     })
-    .then(gattServer =>{
+    .then(gattServer => {
         bleServer = gattServer;
         console.log("Connected to GATT Server");
         return bleServer.getPrimaryService(bleService);
@@ -81,22 +83,33 @@ function connectToDevice(){
     .then(service => {
         bleServiceFound = service;
         console.log("Service discovered:", service.uuid);
-        return service.getCharacteristic(sensorCharacteristic);
+        return service.getCharacteristic(mainModeCharacteristic);
     })
     .then(characteristic => {
-        console.log("Characteristic discovered:", characteristic.uuid);
-        sensorCharacteristicFound = characteristic;
-        characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicChange);
-        characteristic.startNotifications();
-        console.log("Notifications Started.");
+        console.log("Characteristic discovered: ", characteristic.uuid);
+        mainModeCharacteristicFound = characteristic;
         return characteristic.readValue();
     })
     .then(value => {
         console.log("Read value: ", value);
         const decodedValue = new TextDecoder().decode(value);
         console.log("Decoded value: ", decodedValue);
-        retrievedValue.innerHTML = decodedValue;
+        mainModeValue.innerHTML = decodedValue;
     })
+    // .then(characteristic => {
+    //     console.log("Characteristic discovered:", characteristic.uuid);
+    //     sensorCharacteristicFound = characteristic;
+    //     characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicChange);
+    //     characteristic.startNotifications();
+    //     console.log("Notifications Started.");
+    //     return characteristic.readValue();
+    // })
+    // .then(value => {
+    //     console.log("Read value: ", value);
+    //     const decodedValue = new TextDecoder().decode(value);
+    //     console.log("Decoded value: ", decodedValue);
+    //     retrievedValue.innerHTML = decodedValue;
+    // })
     .catch(error => {
         console.log('Error: ', error);
     })
