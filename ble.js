@@ -106,18 +106,57 @@ function connectToDevice() {
     .then(service => {
         bleService = service;
         console.log("Service discovered:", service.uuid);
-        return service.getCharacteristic(mainModeCharacteristicUuid);
-    })
-    .then(characteristic => {
-        console.log("Characteristic discovered: ", characteristic.uuid);
-        mainModeCharacteristic = characteristic;
-        return characteristic.readValue();
-    })
-    .then(value => {
-        console.log("Read value: ", value);
-        const decodedValue = new TextDecoder().decode(value);
-        console.log("Decoded value: ", decodedValue);
-        mainModeContainer.innerHTML = decodedValue;
+
+        service
+            .getCharacteristic(mainModeCharacteristicUuid)
+            .then(characteristic => {
+                console.log("Characteristic discovered: ", characteristic.uuid);
+                mainTmpaCharacteristic = characteristic;
+                return characteristic.readValue();
+            })
+            .then(value => {
+                console.log("Read value: ", value);
+                const decodedValue = new TextDecoder().decode(value);
+                console.log("Decoded value: ", decodedValue);
+                mainModeContainer.innerHTML = decodedValue;
+            })
+            .catch(error => {
+                console.log('Error: ', error);
+            });
+    
+        service
+            .getCharacteristic(mainTmpaCharacteristicUuid)
+            .then(characteristic => {
+                console.log("Characteristic discovered: ", characteristic.uuid);
+                mainTmpaCharacteristic = characteristic;
+                return characteristic.readValue();
+            })
+            .then(value => {
+                console.log("Read value: ", value);
+                const decodedValue = new TextDecoder().decode(value);
+                console.log("Decoded value: ", decodedValue);
+                mainTmpaInput.value = decodedValue;
+            })
+            .catch(error => {
+                console.log('Error: ', error);
+            });
+    
+        service
+            .getCharacteristic(mainTmpbCharacteristicUuid)
+            .then(characteristic => {
+                console.log("Characteristic discovered: ", characteristic.uuid);
+                mainTmpbCharacteristic = characteristic;
+                return characteristic.readValue();
+            })
+            .then(value => {
+                console.log("Read value: ", value);
+                const decodedValue = new TextDecoder().decode(value);
+                console.log("Decoded value: ", decodedValue);
+                mainTmpbInput.value = decodedValue;
+            })
+            .catch(error => {
+                console.log('Error: ', error);
+            });
     })
     // .then(characteristic => {
     //     console.log("Characteristic discovered:", characteristic.uuid);
@@ -136,40 +175,6 @@ function connectToDevice() {
     .catch(error => {
         console.log('Error: ', error);
     });
-
-    bleService
-        .getCharacteristic(mainTmpaCharacteristicUuid)
-        .then(characteristic => {
-            console.log("Characteristic discovered: ", characteristic.uuid);
-            mainTmpaCharacteristic = characteristic;
-            return characteristic.readValue();
-        })
-        .then(value => {
-            console.log("Read value: ", value);
-            const decodedValue = new TextDecoder().decode(value);
-            console.log("Decoded value: ", decodedValue);
-            mainTmpaInput.value = decodedValue;
-        })
-        .catch(error => {
-            console.log('Error: ', error);
-        });
-
-    bleService
-        .getCharacteristic(mainTmpbCharacteristicUuid)
-        .then(characteristic => {
-            console.log("Characteristic discovered: ", characteristic.uuid);
-            mainTmpbCharacteristic = characteristic;
-            return characteristic.readValue();
-        })
-        .then(value => {
-            console.log("Read value: ", value);
-            const decodedValue = new TextDecoder().decode(value);
-            console.log("Decoded value: ", decodedValue);
-            mainTmpbInput.value = decodedValue;
-        })
-        .catch(error => {
-            console.log('Error: ', error);
-        });
 }
 
 function onDisconnected(event) {
