@@ -63,7 +63,29 @@
       </div>
     </nav>
 
-    <div class="card border-dark mt-4">
+    <div class="card border-dark mt-4" id="mainCard">
+      <div class="card-header">
+        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+        Main
+      </div>
+      <div class="card-body">
+        <form class="row g-3">
+          <div class="col-md-6">
+            <label for="main_tmpa" class="form-label">Boiler (&temp;)</label>
+            <input type="number" class="form-control" id="main_tmpa" value="70">
+          </div>
+          <div class="col-md-6">
+            <label for="main_tmpb" class="form-label">Floor (&temp;)</label>
+            <input type="number" class="form-control" id="main_tmpb" value="50">
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card border-dark mt-4" id="wifiCard">
       <div class="card-header">
         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#wifi"/></svg>
         WiFi
@@ -84,7 +106,8 @@
         </form>
       </div>
     </div>
-    <div class="card border-dark mt-4">
+
+    <div class="card border-dark mt-4" id="mqttCard">
       <div class="card-header">
         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#server"/></svg>
         MQTT
