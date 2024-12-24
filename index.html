@@ -64,7 +64,7 @@
           <div class="d-lg-flex justify-content-lg-middle" id="mainModeValue"></div>
           <div class="d-lg-flex justify-content-lg-end">
             <button type="button" class="btn btn-primary" id="connectBleButton">Connect</button>
-            <button type="button" class="btn btn-warning visually-hidden" id="rebootBleButton">Reboot</button>
+            <button type="button" class="btn btn-warning me-2 visually-hidden" id="rebootBleButton">Reboot</button>
             <button type="button" class="btn btn-danger visually-hidden" id="disconnectBleButton">Disconnect</button>
           </div>
         </div>
@@ -79,21 +79,12 @@
       <div class="card-body">
         <form class="row g-3">
           <div class="col-md-6">
-            <label for="main_tmpa" class="form-label">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#thermometer-high"/></svg>
-              Boiler
-            </label>
+            <label for="main_tmpa" class="form-label">Boiler</label>
             <input type="number" class="form-control" id="main_tmpa" value="70">
           </div>
           <div class="col-md-6">
-            <label for="main_tmpb" class="form-label">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#thermometer-low"/></svg>
-              Floor
-            </label>
+            <label for="main_tmpb" class="form-label">Floor</label>
             <input type="number" class="form-control" id="main_tmpb" value="50">
-          </div>
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </form>
       </div>
@@ -113,9 +104,6 @@
           <div class="col-md-6">
             <label for="wifi_pass" class="form-label">Password</label>
             <input type="password" class="form-control" id="wifi_pass" placeholder="mypass">
-          </div>
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </form>
       </div>
@@ -143,9 +131,6 @@
           <div class="col-md-6">
             <label for="mqtt_pass" class="form-label">Password</label>
             <input type="password" class="form-control" id="mqtt_pass" placeholder="mypass">
-          </div>
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </form>
       </div>
