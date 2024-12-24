@@ -248,6 +248,7 @@ function disconnectDevice() {
         mainCard.classList.toggle("visually-hidden");
         wifiCard.classList.toggle("visually-hidden");
         mqttCard.classList.toggle("visually-hidden");
+        welcome.classList.toggle("visually-hidden");
 
         connectButton.classList.toggle("visually-hidden");
         disconnectButton.classList.toggle("visually-hidden");
