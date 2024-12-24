@@ -61,16 +61,7 @@
             <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#heater"/></svg>
             <span class="fs-4">uHeater</span>
           </a>
-          <ul class="navbar-nav col-lg-6 justify-content-lg-center">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainModeContainer">...</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Off</a></li>
-                <li><a class="dropdown-item" href="#">Boiler</a></li>
-                <li><a class="dropdown-item" href="#">Floor</a></li>
-              </ul>
-            </li>
-          </ul>
+          <div class="navbar-nav col-lg-6 justify-content-lg-center visually-hidden" id="mainModeContainer"></div>
           <div class="d-lg-flex col-lg-3 justify-content-lg-end">
             <button type="button" class="btn btn-primary" id="connectBleButton">Connect</button>
             <button type="button" class="btn btn-warning me-2 visually-hidden" id="rebootBleButton">Reboot</button>
@@ -79,6 +70,13 @@
         </div>
       </div>
     </nav>
+
+    <div class="p-5 text-center bg-body-tertiary rounded-3 mt-4" id="welcome">
+      <h1 class="text-body-emphasis" id="welcome-title">Welcome</h1>
+      <p class="lead" id="welcome-text">
+        Please press connect button
+      </p>
+    </div>
 
     <div class="card border-dark mt-4 visually-hidden" id="mainCard">
       <div class="card-header">
