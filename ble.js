@@ -11,7 +11,7 @@ const bleStateContainer = document.getElementById('bleState');
 const timestampContainer = document.getElementById('timestamp');
 
 // Define BLE Device Specs
-var deviceName ='heater';
+var deviceName ='uHeater';
 
 var bleService = 'b0eb7b09-a92f-4cd7-a3ef-e009449bb46a';
 var bleMainService = 'b0eb7b09-a92f-4cd7-a3ef-e009449bb46a';
