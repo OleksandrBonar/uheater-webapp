@@ -163,6 +163,7 @@ function connectToDevice() {
                 mainCard.classList.toggle("visually-hidden");
                 wifiCard.classList.toggle("visually-hidden");
                 mqttCard.classList.toggle("visually-hidden");
+                welcome.classList.toggle("visually-hidden");
             })
             .catch(error => {
                 console.log('Error: ', error);
