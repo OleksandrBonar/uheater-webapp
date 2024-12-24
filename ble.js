@@ -1,4 +1,7 @@
 // DOM Elements
+const mainCard = document.getElementById('mainCard');
+const wifiCard = document.getElementById('wifiCard');
+const mqttCard = document.getElementById('mqttCard');
 const connectButton = document.getElementById('connectBleButton');
 const disconnectButton = document.getElementById('disconnectBleButton');
 const rebootButton = document.getElementById('rebootBleButton');
@@ -66,6 +69,10 @@ function connectToDevice() {
         console.log('Device Selected:', device.name);
         // bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         // bleStateContainer.style.color = "#24af37";
+
+        mainCard.classList.toggle("visually-hidden");
+        wifiCard.classList.toggle("visually-hidden");
+        mqttCard.classList.toggle("visually-hidden");
 
         connectButton.classList.toggle("visually-hidden");
         disconnectButton.classList.toggle("visually-hidden");
@@ -171,6 +178,10 @@ function disconnectDevice() {
         console.log("Device Disconnected");
         // bleStateContainer.innerHTML = "Device Disconnected";
         // bleStateContainer.style.color = "#d13a30";
+
+        mainCard.classList.toggle("visually-hidden");
+        wifiCard.classList.toggle("visually-hidden");
+        mqttCard.classList.toggle("visually-hidden");
 
         connectButton.classList.toggle("visually-hidden");
         disconnectButton.classList.toggle("visually-hidden");
