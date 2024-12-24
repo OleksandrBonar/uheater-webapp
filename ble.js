@@ -8,7 +8,12 @@ const rebootButton = document.getElementById('rebootBleButton');
 const onButton = document.getElementById('onButton');
 const offButton = document.getElementById('offButton');
 const retrievedValue = document.getElementById('valueContainer');
+
 const mainModeContainer = document.getElementById('mainModeContainer');
+const welcomeContainer = document.getElementById('welcome');
+const welcomeTitle = document.getElementById('welcomeTitle');
+const welcomeText = document.getElementById('welcomeText');
+
 const latestValueSent = document.getElementById('valueSent');
 const bleStateContainer = document.getElementById('bleState');
 const mainTmpaInput = document.getElementById('mainTmpaInput');
@@ -86,9 +91,8 @@ function connectToDevice() {
         // bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         // bleStateContainer.style.color = "#24af37";
 
-        mainCard.classList.toggle("visually-hidden");
-        wifiCard.classList.toggle("visually-hidden");
-        mqttCard.classList.toggle("visually-hidden");
+        welcomeTitle.innerHtml = 'Success';
+        welcomeText.innerHtml = 'Connected to device ' + device.name;
 
         connectButton.classList.toggle("visually-hidden");
         disconnectButton.classList.toggle("visually-hidden");
@@ -118,6 +122,8 @@ function connectToDevice() {
                 console.log("Read value: ", value);
                 const decodedValue = new TextDecoder().decode(value);
                 console.log("Decoded value: ", decodedValue);
+
+                mainModeContainer.classList.toggle("visually-hidden");
                 mainModeContainer.innerHTML = decodedValue;
             })
             .catch(error => {
@@ -153,6 +159,10 @@ function connectToDevice() {
                 const decodedValue = new TextDecoder().decode(value);
                 console.log("Decoded value: ", decodedValue);
                 mainTmpbInput.value = decodedValue;
+
+                mainCard.classList.toggle("visually-hidden");
+                wifiCard.classList.toggle("visually-hidden");
+                mqttCard.classList.toggle("visually-hidden");
             })
             .catch(error => {
                 console.log('Error: ', error);
