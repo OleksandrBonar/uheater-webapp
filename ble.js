@@ -8,7 +8,7 @@ const rebootButton = document.getElementById('rebootBleButton');
 const onButton = document.getElementById('onButton');
 const offButton = document.getElementById('offButton');
 const retrievedValue = document.getElementById('valueContainer');
-const mainModeValue = document.getElementById('mainModeContainer');
+const mainModeContainer = document.getElementById('mainModeContainer');
 const latestValueSent = document.getElementById('valueSent');
 const bleStateContainer = document.getElementById('bleState');
 const mainTmpaInput = document.getElementById('mainTmpaInput');
@@ -117,7 +117,7 @@ function connectToDevice() {
         console.log("Read value: ", value);
         const decodedValue = new TextDecoder().decode(value);
         console.log("Decoded value: ", decodedValue);
-        mainModeValue.innerHTML = decodedValue;
+        mainModeContainer.innerHTML = decodedValue;
     })
     // .then(characteristic => {
     //     console.log("Characteristic discovered:", characteristic.uuid);
