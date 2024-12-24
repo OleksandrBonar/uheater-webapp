@@ -43,6 +43,14 @@
       <path d="M1.333 6.334v3C1.333 10.805 4.318 12 8 12s6.667-1.194 6.667-2.667V6.334a6.5 6.5 0 0 1-1.458.79C11.81 7.684 9.967 8 8 8s-3.809-.317-5.208-.876a6.5 6.5 0 0 1-1.458-.79z"/>
       <path d="M14.667 11.668a6.5 6.5 0 0 1-1.458.789c-1.4.56-3.242.876-5.21.876-1.966 0-3.809-.316-5.208-.876a6.5 6.5 0 0 1-1.458-.79v1.666C1.333 14.806 4.318 16 8 16s6.667-1.194 6.667-2.667z"/>
     </symbol>
+    <symbol id="thermometer-high" viewBox="0 0 16 16">
+      <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V2.5a.5.5 0 0 1 1 0v8.585a1.5 1.5 0 0 1 1 1.415"/>
+      <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1"/>
+    </symbol>
+    <symbol id="thermometer-low" viewBox="0 0 16 16">
+      <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V9.5a.5.5 0 0 1 1 0v1.585a1.5 1.5 0 0 1 1 1.415"/>
+      <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1"/>
+    </symbol>
   </svg>
 
   <div class="container mt-4">
@@ -71,11 +79,17 @@
       <div class="card-body">
         <form class="row g-3">
           <div class="col-md-6">
-            <label for="main_tmpa" class="form-label">Boiler (&temp;)</label>
+            <label for="main_tmpa" class="form-label">
+              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#thermometer-high"/></svg>
+              Boiler
+            </label>
             <input type="number" class="form-control" id="main_tmpa" value="70">
           </div>
           <div class="col-md-6">
-            <label for="main_tmpb" class="form-label">Floor (&temp;)</label>
+            <label for="main_tmpb" class="form-label">
+              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#thermometer-low"/></svg>
+              Floor
+            </label>
             <input type="number" class="form-control" id="main_tmpb" value="50">
           </div>
           <div class="col-12">
