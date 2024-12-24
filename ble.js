@@ -11,25 +11,40 @@ const retrievedValue = document.getElementById('valueContainer');
 const mainModeValue = document.getElementById('mainModeContainer');
 const latestValueSent = document.getElementById('valueSent');
 const bleStateContainer = document.getElementById('bleState');
-const timestampContainer = document.getElementById('timestamp');
+const mainTmpaInput = document.getElementById('mainTmpaInput');
+const mainTmpbInput = document.getElementById('mainTmpbInput');
 
 // Define BLE Device Specs
 var deviceName ='uHeater';
 
-var bleService = 'b0eb7b09-a92f-4cd7-a3ef-e009449bb46a';
-var bleMainService = 'b0eb7b09-a92f-4cd7-a3ef-e009449bb46a';
-var bleStatService = 'd6d09854-4b2a-48ea-a307-416a2b7269d1';
-var mainBootCharacteristic = '44d8a42d-9720-4adb-878d-5922094b247c';
-var mainModeCharacteristic = '85f369a6-4581-4d30-854f-65d4f9240cc6';
+var mainServiceUuid = 'b0eb7b09-a92f-4cd7-a3ef-e009449bb46a';
+var wifiServiceUuid = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
+var mqttServiceUuid = '71842a85-784f-41d9-b4a3-d27994a35047';
 
-var ledCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
-var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
+var mainBootCharacteristicUuid = '44d8a42d-9720-4adb-878d-5922094b247c';
+var mainModeCharacteristicUuid = '85f369a6-4581-4d30-854f-65d4f9240cc6';
+var mainTmpaCharacteristicUuid = '9bf61fc0-f498-4a91-9077-f0997b9a25af';
+var mainTmpbCharacteristicUuid = '0655d6c3-6e50-4c84-ab94-6903e1176b72';
+var wifiSsidCharacteristicUuid = '9c298009-647c-4a4d-86f7-6cd0bf2ceac0';
+var wifiPassCharacteristicUuid = '9d0a19d9-049b-445e-acf1-2c9c74dad82e';
+var mqttHostCharacteristicUuid = '47ecdd61-bb6f-47c7-abbc-d22a66c8bad4';
+var mqttPortCharacteristicUuid = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
+var mqttUserCharacteristicUuid = 'c89baae7-6efb-4149-8aed-1537d7b489b0';
+var mqttPassCharacteristicUuid = '116ce63e-c67f-470c-9380-4c32b4379c9d';
 
 // Global Variables to Handle Bluetooth
 var bleServer;
-var bleServiceFound;
-var sensorCharacteristicFound;
-var mainModeCharacteristicFound;
+var bleService;
+var sensorCharacteristic;
+var mainModeCharacteristic;
+var mainTmpaCharacteristic;
+var mainTmpbCharacteristic;
+var wifiSsidCharacteristic;
+var wifiPassCharacteristic;
+var mqttHostCharacteristic;
+var mqttPortCharacteristic;
+var mqttUserCharacteristic;
+var mqttPassCharacteristic;
 
 // Connect Button (search for BLE Devices only if BLE is available)
 connectButton.addEventListener('click', (event) => {
@@ -61,9 +76,10 @@ function isWebBluetoothEnabled() {
 // Connect to BLE Device and Enable Notifications
 function connectToDevice() {
     console.log('Initializing Bluetooth...');
+
     navigator.bluetooth.requestDevice({
         filters: [{name: deviceName}],
-        optionalServices: [bleService]
+        optionalServices: [mainServiceUuid]
     })
     .then(device => {
         console.log('Device Selected:', device.name);
@@ -85,16 +101,16 @@ function connectToDevice() {
     .then(gattServer => {
         bleServer = gattServer;
         console.log("Connected to GATT Server");
-        return bleServer.getPrimaryService(bleService);
+        return bleServer.getPrimaryService(mainServiceUuid);
     })
     .then(service => {
-        bleServiceFound = service;
+        mainService = service;
         console.log("Service discovered:", service.uuid);
-        return service.getCharacteristic(mainModeCharacteristic);
+        return service.getCharacteristic(mainModeCharacteristicUuid);
     })
     .then(characteristic => {
         console.log("Characteristic discovered: ", characteristic.uuid);
-        mainModeCharacteristicFound = characteristic;
+        mainModeCharacteristic = characteristic;
         return characteristic.readValue();
     })
     .then(value => {
@@ -119,7 +135,41 @@ function connectToDevice() {
     // })
     .catch(error => {
         console.log('Error: ', error);
-    })
+    });
+
+    mainService
+        .getCharacteristic(mainTmpaCharacteristicUuid)
+        .then(characteristic => {
+            console.log("Characteristic discovered: ", characteristic.uuid);
+            mainTmpaCharacteristic = characteristic;
+            return characteristic.readValue();
+        })
+        .then(value => {
+            console.log("Read value: ", value);
+            const decodedValue = new TextDecoder().decode(value);
+            console.log("Decoded value: ", decodedValue);
+            mainTmpaInput.value = decodedValue;
+        })
+        .catch(error => {
+            console.log('Error: ', error);
+        });
+
+    mainService
+        .getCharacteristic(mainTmpbCharacteristicUuid)
+        .then(characteristic => {
+            console.log("Characteristic discovered: ", characteristic.uuid);
+            mainTmpbCharacteristic = characteristic;
+            return characteristic.readValue();
+        })
+        .then(value => {
+            console.log("Read value: ", value);
+            const decodedValue = new TextDecoder().decode(value);
+            console.log("Decoded value: ", decodedValue);
+            mainTmpbInput.value = decodedValue;
+        })
+        .catch(error => {
+            console.log('Error: ', error);
+        });
 }
 
 function onDisconnected(event) {
@@ -140,7 +190,7 @@ function handleCharacteristicChange(event){
 function writeOnCharacteristic(uuid, value) {
     console.log("writeOnCharacteristic");
     if (bleServer && bleServer.connected) {
-        bleServiceFound.getCharacteristic(uuid)
+        bleService.getCharacteristic(uuid)
             .then(characteristic => {
                 console.log("Found the characteristic: ", characteristic.uuid);
                 const data = new Uint8Array([value]);
@@ -162,8 +212,8 @@ function writeOnCharacteristic(uuid, value) {
 function disconnectDevice() {
     console.log("Disconnect Device.");
     if (bleServer && bleServer.connected) {
-        if (sensorCharacteristicFound) {
-            sensorCharacteristicFound.stopNotifications()
+        if (sensorCharacteristic) {
+            sensorCharacteristic.stopNotifications()
                 .then(() => {
                     console.log("Notifications Stopped");
                 })
@@ -191,17 +241,4 @@ function disconnectDevice() {
         console.error("Bluetooth is not connected.");
         window.alert("Bluetooth is not connected.")
     }
-}
-
-function getDateTime() {
-    var currentdate = new Date();
-    var day = ("00" + currentdate.getDate()).slice(-2); // Convert day to string and slice
-    var month = ("00" + (currentdate.getMonth() + 1)).slice(-2);
-    var year = currentdate.getFullYear();
-    var hours = ("00" + currentdate.getHours()).slice(-2);
-    var minutes = ("00" + currentdate.getMinutes()).slice(-2);
-    var seconds = ("00" + currentdate.getSeconds()).slice(-2);
-
-    var datetime = day + "/" + month + "/" + year + " at " + hours + ":" + minutes + ":" + seconds;
-    return datetime;
 }
