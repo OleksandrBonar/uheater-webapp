@@ -104,7 +104,7 @@ function connectToDevice() {
         return bleServer.getPrimaryService(mainServiceUuid);
     })
     .then(service => {
-        mainService = service;
+        bleService = service;
         console.log("Service discovered:", service.uuid);
         return service.getCharacteristic(mainModeCharacteristicUuid);
     })
@@ -137,7 +137,7 @@ function connectToDevice() {
         console.log('Error: ', error);
     });
 
-    mainService
+    bleService
         .getCharacteristic(mainTmpaCharacteristicUuid)
         .then(characteristic => {
             console.log("Characteristic discovered: ", characteristic.uuid);
@@ -154,7 +154,7 @@ function connectToDevice() {
             console.log('Error: ', error);
         });
 
-    mainService
+    bleService
         .getCharacteristic(mainTmpbCharacteristicUuid)
         .then(characteristic => {
             console.log("Characteristic discovered: ", characteristic.uuid);
