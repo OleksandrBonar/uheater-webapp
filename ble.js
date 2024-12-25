@@ -16,8 +16,13 @@ const welcomeText = document.getElementById('welcomeText');
 
 const latestValueSent = document.getElementById('valueSent');
 const bleStateContainer = document.getElementById('bleState');
+
 const mainTmpaInput = document.getElementById('mainTmpaInput');
 const mainTmpbInput = document.getElementById('mainTmpbInput');
+const wifiSsidInput = document.getElementById('wifiSsidInput');
+const mqttHostInput = document.getElementById('mqttHostInput');
+const mqttPortInput = document.getElementById('mqttPortInput');
+const mqttUserInput = document.getElementById('mqttUserInput');
 
 // Define BLE Device Specs
 var deviceName ='uHeater';
@@ -39,7 +44,9 @@ var mqttPassCharacteristicUuid = '116ce63e-c67f-470c-9380-4c32b4379c9d';
 
 // Global Variables to Handle Bluetooth
 var bleServer;
-var bleService;
+var bleServiceMain;
+var bleServiceWifi;
+var bleServiceMqtt;
 var sensorCharacteristic;
 var mainModeCharacteristic;
 var mainTmpaCharacteristic;
@@ -65,7 +72,7 @@ disconnectButton.addEventListener('click', disconnectDevice);
 // onButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 1));
 // offButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 0));
 
-rebootButton.addEventListener('click', () => writeOnCharacteristic(mainBootCharacteristicUuid, 'Y'));
+rebootButton.addEventListener('click', () => writeOnCharacteristicMain(mainBootCharacteristicUuid, 'Y'));
 
 // Check if BLE is available in your Browser
 function isWebBluetoothEnabled() {
@@ -105,70 +112,101 @@ function connectToDevice() {
     .then(gattServer => {
         bleServer = gattServer;
         console.log("Connected to GATT Server");
-        return bleServer.getPrimaryService(mainServiceUuid);
+
+        serviceMain = bleServer.getPrimaryService(mainServiceUuid);
+        serviceWifi = bleServer.getPrimaryService(wifiServiceUuid);
+        serviceMqtt = bleServer.getPrimaryService(mqttServiceUuid);
+
+        return Promise.all([serviceMain, serviceWifi, serviceMqtt]);
     })
-    .then(service => {
-        bleService = service;
-        console.log("Service discovered:", service.uuid);
+    .then([serviceMain, serviceWifi, serviceMqtt] => {
+        bleServiceMain = serviceMain;
+        console.log("Service discovered:", serviceMain.uuid);
 
-        service
-            .getCharacteristic(mainModeCharacteristicUuid)
-            .then(characteristic => {
-                console.log("Characteristic discovered: ", characteristic.uuid);
-                mainTmpaCharacteristic = characteristic;
-                return characteristic.readValue();
-            })
-            .then(value => {
-                console.log("Read value: ", value);
-                const decodedValue = new TextDecoder().decode(value);
-                console.log("Decoded value: ", decodedValue);
+        bleServiceWifi = serviceWifi;
+        console.log("Service discovered:", serviceWifi.uuid);
 
-                mainModeContainer.classList.toggle("visually-hidden");
-                mainModeContainer.innerHTML = decodedValue;
-            })
-            .catch(error => {
-                console.log('Error: ', error);
-            });
-    
-        service
-            .getCharacteristic(mainTmpaCharacteristicUuid)
-            .then(characteristic => {
-                console.log("Characteristic discovered: ", characteristic.uuid);
-                mainTmpaCharacteristic = characteristic;
-                return characteristic.readValue();
-            })
-            .then(value => {
-                console.log("Read value: ", value);
-                const decodedValue = new TextDecoder().decode(value);
-                console.log("Decoded value: ", decodedValue);
-                mainTmpaInput.value = decodedValue;
-            })
-            .catch(error => {
-                console.log('Error: ', error);
-            });
-    
-        service
-            .getCharacteristic(mainTmpbCharacteristicUuid)
-            .then(characteristic => {
-                console.log("Characteristic discovered: ", characteristic.uuid);
-                mainTmpbCharacteristic = characteristic;
-                return characteristic.readValue();
-            })
-            .then(value => {
-                console.log("Read value: ", value);
-                const decodedValue = new TextDecoder().decode(value);
-                console.log("Decoded value: ", decodedValue);
-                mainTmpbInput.value = decodedValue;
+        bleServiceMqtt = serviceMqtt;
+        console.log("Service discovered:", serviceMqtt.uuid);
 
-                mainCard.classList.toggle("visually-hidden");
-                wifiCard.classList.toggle("visually-hidden");
-                mqttCard.classList.toggle("visually-hidden");
-                welcome.classList.toggle("visually-hidden");
-            })
-            .catch(error => {
-                console.log('Error: ', error);
-            });
+        characteristicMainMode = serviceMain.getCharacteristic(mainModeCharacteristicUuid);
+        characteristicMainTmpa = serviceMain.getCharacteristic(mainTmpaCharacteristicUuid);
+        characteristicMainTmpb = serviceMain.getCharacteristic(mainTmpbCharacteristicUuid);
+
+        characteristicWifiSsid = serviceWifi.getCharacteristic(wifiSsidCharacteristicUuid);
+
+        characteristicMqttHost = serviceMqtt.getCharacteristic(mqttHostCharacteristicUuid);
+        characteristicMqttPort = serviceMqtt.getCharacteristic(mqttPortCharacteristicUuid);
+        characteristicMqttUser = serviceMqtt.getCharacteristic(mqttUserCharacteristicUuid);
+
+        return Promise.all([
+            characteristicMainMode, characteristicMainTmpa, characteristicMainTmpb,
+            characteristicWifiSsid,
+            characteristicMqttHost, characteristicMqttPort, characteristicMqttUser
+        ]);
     })
+    .then([
+        characteristicMainMode, characteristicMainTmpa, characteristicMainTmpb,
+        characteristicWifiSsid,
+        characteristicMqttHost, characteristicMqttPort, characteristicMqttUser
+    ] => {
+        console.log("Characteristic discovered: ", characteristicMainMode.uuid);
+        mainModeCharacteristic = characteristicMainMode;
+        console.log("Characteristic discovered: ", characteristicMainTmpa.uuid);
+        mainTmpaCharacteristic = characteristicMainTmpa;
+        console.log("Characteristic discovered: ", characteristicMainTmpb.uuid);
+        mainTmpbCharacteristic = characteristicMainTmpb;
+
+        console.log("Characteristic discovered: ", characteristicWifiSsid.uuid);
+        wifiSsidCharacteristic = characteristicWifiSsid;
+
+        console.log("Characteristic discovered: ", characteristicMqttHost.uuid);
+        mqttHostCharacteristic = characteristicMqttHost;
+        console.log("Characteristic discovered: ", characteristicMqttPort.uuid);
+        mqttPortCharacteristic = characteristicMqttPort;
+        console.log("Characteristic discovered: ", characteristicMqttUser.uuid);
+        mqttUserCharacteristic = characteristicMqttUser;
+
+        return Promise.all([
+            characteristicMainMode.readValue(), characteristicMainTmpa.readValue(), characteristicMainTmpb.readValue(),
+            characteristicWifiSsid.readValue(),
+            characteristicMqttHost.readValue(), characteristicMqttPort.readValue(), characteristicMqttUser.readValue(),
+        ]);
+    })
+    .then([
+        valueMainMode, valueMainTmpa, valueMainTmpb,
+        valueWifiSsid,
+        valueMqttHost, valueMqttPort, valueMqttUser,
+    ] => {
+        const decodedValueMainMode = new TextDecoder().decode(valueMainMode);
+        const decodedValueMainTmpa = new TextDecoder().decode(valueMainTmpa);
+        const decodedValueMainTmpb = new TextDecoder().decode(valueMainTmpb);
+        const decodedValueWifiSsid = new TextDecoder().decode(valueWifiSsid);
+        const decodedValueMqttHost = new TextDecoder().decode(valueMqttHost);
+        const decodedValueMqttPort = new TextDecoder().decode(valueMqttPort);
+        const decodedValueMqttUser = new TextDecoder().decode(valueMqttUser);
+
+        mainModeContainer.innerHTML = decodedValueMainMode;
+        mainModeContainer.classList.toggle("visually-hidden");
+
+        mainTmpaInput.value = decodedValueMainTmpa;
+        mainTmpbInput.value = decodedValueMainTmpb;
+        mainCard.classList.toggle("visually-hidden");
+
+        wifiSsidInput.value = decodedValueWifiSsid;
+        wifiCard.classList.toggle("visually-hidden");
+
+        mqttHostInput.value = decodedValueMqttHost;
+        mqttPortInput.value = decodedValueMqttPort;
+        mqttUserInput.value = decodedValueMqttUser;
+        mqttCard.classList.toggle("visually-hidden");
+
+        welcome.classList.toggle("visually-hidden");
+    })
+    .catch(error => {
+        console.log('Error: ', error);
+    });
+    //})
     // .then(characteristic => {
     //     console.log("Characteristic discovered:", characteristic.uuid);
     //     sensorCharacteristicFound = characteristic;
@@ -183,9 +221,9 @@ function connectToDevice() {
     //     console.log("Decoded value: ", decodedValue);
     //     retrievedValue.innerHTML = decodedValue;
     // })
-    .catch(error => {
-        console.log('Error: ', error);
-    });
+    // .catch(error => {
+    //     console.log('Error: ', error);
+    // });
 }
 
 function onDisconnected(event) {
