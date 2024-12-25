@@ -258,8 +258,8 @@ function writeOnCharacteristic(service, uuid, value) {
         service.getCharacteristic(uuid)
             .then(characteristic => {
                 console.log("Found the characteristic: ", characteristic.uuid);
-                const data = new Uint8Array([value]);
-                return characteristic.writeValue(data);
+                //const data = new Uint8Array([value]);
+                return characteristic.writeValue(value);
             })
             .then(() => {
                 // latestValueSent.innerHTML = value;
