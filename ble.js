@@ -73,6 +73,8 @@ disconnectButton.addEventListener('click', disconnectDevice);
 // offButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 0));
 
 rebootButton.addEventListener('click', () => writeOnCharacteristic(bleServiceMain, mainBootCharacteristicUuid, 'Y'));
+mainTmpaInput.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainTmpaCharacteristicUuid, mainTmpaInput.value));
+mainTmpbInput.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainTmpbCharacteristicUuid, mainTmpbInput.value));
 
 // Check if BLE is available in your Browser
 function isWebBluetoothEnabled() {
