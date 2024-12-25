@@ -119,7 +119,7 @@ function connectToDevice() {
 
         return Promise.all([serviceMain, serviceWifi, serviceMqtt]);
     })
-    .then([serviceMain, serviceWifi, serviceMqtt] => {
+    .then(([serviceMain, serviceWifi, serviceMqtt]) => {
         bleServiceMain = serviceMain;
         console.log("Service discovered:", serviceMain.uuid);
 
@@ -145,11 +145,11 @@ function connectToDevice() {
             characteristicMqttHost, characteristicMqttPort, characteristicMqttUser
         ]);
     })
-    .then([
+    .then(([
         characteristicMainMode, characteristicMainTmpa, characteristicMainTmpb,
         characteristicWifiSsid,
         characteristicMqttHost, characteristicMqttPort, characteristicMqttUser
-    ] => {
+    ]) => {
         console.log("Characteristic discovered: ", characteristicMainMode.uuid);
         mainModeCharacteristic = characteristicMainMode;
         console.log("Characteristic discovered: ", characteristicMainTmpa.uuid);
@@ -173,11 +173,11 @@ function connectToDevice() {
             characteristicMqttHost.readValue(), characteristicMqttPort.readValue(), characteristicMqttUser.readValue(),
         ]);
     })
-    .then([
+    .then(([
         valueMainMode, valueMainTmpa, valueMainTmpb,
         valueWifiSsid,
         valueMqttHost, valueMqttPort, valueMqttUser,
-    ] => {
+    ]) => {
         const decodedValueMainMode = new TextDecoder().decode(valueMainMode);
         const decodedValueMainTmpa = new TextDecoder().decode(valueMainTmpa);
         const decodedValueMainTmpb = new TextDecoder().decode(valueMainTmpb);
