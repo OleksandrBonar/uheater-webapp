@@ -98,8 +98,8 @@ function connectToDevice() {
         // bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         // bleStateContainer.style.color = "#24af37";
 
-        welcomeTitle.innerHtml = 'Success';
-        welcomeText.innerHtml = 'Connected to device ' + device.name;
+        welcomeTitle.textContent = 'Connected!';
+        welcomeText.textContent = 'Loading...';
 
         connectButton.classList.toggle("visually-hidden");
         disconnectButton.classList.toggle("visually-hidden");
@@ -286,6 +286,9 @@ function disconnectDevice() {
         mainCard.classList.toggle("visually-hidden");
         wifiCard.classList.toggle("visually-hidden");
         mqttCard.classList.toggle("visually-hidden");
+
+        welcomeTitle.textContent = 'Welcome';
+        welcomeText.textContent = 'Please press connect button';
         welcome.classList.toggle("visually-hidden");
 
         connectButton.classList.toggle("visually-hidden");
