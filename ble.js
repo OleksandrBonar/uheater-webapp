@@ -72,7 +72,7 @@ disconnectButton.addEventListener('click', disconnectDevice);
 // onButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 1));
 // offButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 0));
 
-rebootButton.addEventListener('click', () => writeOnCharacteristicMain(mainBootCharacteristicUuid, 'Y'));
+rebootButton.addEventListener('click', () => writeOnCharacteristic(bleServiceMain, mainBootCharacteristicUuid, 'Y'));
 
 // Check if BLE is available in your Browser
 function isWebBluetoothEnabled() {
@@ -234,17 +234,17 @@ function onDisconnected(event) {
     connectToDevice();
 }
 
-function handleCharacteristicChange(event){
+function handleCharacteristicChange(event) {
     const newValueReceived = new TextDecoder().decode(event.target.value);
     console.log("Characteristic value changed: ", newValueReceived);
     retrievedValue.innerHTML = newValueReceived;
     timestampContainer.innerHTML = getDateTime();
 }
 
-function writeOnCharacteristic(uuid, value) {
+function writeOnCharacteristic(service, uuid, value) {
     console.log("writeOnCharacteristic");
     if (bleServer && bleServer.connected) {
-        bleService.getCharacteristic(uuid)
+        service.getCharacteristic(uuid)
             .then(characteristic => {
                 console.log("Found the characteristic: ", characteristic.uuid);
                 const data = new Uint8Array([value]);
