@@ -91,7 +91,7 @@ function connectToDevice() {
 
     navigator.bluetooth.requestDevice({
         filters: [{name: deviceName}],
-        optionalServices: [mainServiceUuid]
+        optionalServices: [mainServiceUuid, wifiServiceUuid, mqttServiceUuid]
     })
     .then(device => {
         console.log('Device Selected:', device.name);
