@@ -258,7 +258,7 @@ function writeOnCharacteristic(service, uuid, value) {
         service.getCharacteristic(uuid)
             .then(characteristic => {
                 console.log("Found the characteristic: ", characteristic.uuid);
-                const enco = new TextEncoder().encode(value);
+                const enco = new TextEncoder('utf-8').encode(value);
                 const data = new Uint8Array([enco]);
                 return characteristic.writeValue(data);
             })
