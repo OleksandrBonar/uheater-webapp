@@ -205,6 +205,12 @@ function connectToDevice() {
     })
     .catch(error => {
         console.log('Error: ', error);
+
+        welcomeCard.classList.contains('visually-hidden') || welcomeCard.classList.add('visually-hidden');
+
+        errorTitle.textContent = 'Error';
+        errorMessage.textContent = error;
+        errorCard.classList.contains('visually-hidden') && errorCard.classList.remove('visually-hidden');
     });
 }
 
