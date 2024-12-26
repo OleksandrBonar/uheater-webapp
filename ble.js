@@ -187,21 +187,21 @@ function connectToDevice() {
         const decoder = new TextDecoder();
 
         mainModeContainer.innerHTML = decoder.decode(valueMainMode);
-        mainModeContainer.classList.toggle('visually-hidden');
+        mainModeContainer.classList.contains('visually-hidden') && mainModeContainer.remove('visually-hidden');
 
         mainTmpaInput.value = decoder.decode(valueMainTmpa);
         mainTmpbInput.value = decoder.decode(valueMainTmpb);
-        mainCard.classList.toggle('visually-hidden');
+        mainCard.classList.contains('visually-hidden') && mainCard.classList.remove('visually-hidden');
 
         wifiSsidInput.value = decoder.decode(valueWifiSsid);
-        wifiCard.classList.toggle('visually-hidden');
+        wifiCard.classList.contains('visually-hidden') && wifiCard.classList.remove('visually-hidden');
 
         mqttHostInput.value = decoder.decode(valueMqttHost);
         mqttPortInput.value = decoder.decode(valueMqttPort);
         mqttUserInput.value = decoder.decode(valueMqttUser);
-        mqttCard.classList.toggle('visually-hidden');
+        mqttCard.classList.contains('visually-hidden') && mqttCard.classList.remove('visually-hidden');
 
-        welcomeCard.classList.toggle('visually-hidden');
+        welcomeCard.classList.contains('visually-hidden') || welcomeCard.classList.add('visually-hidden');
     })
     .catch(error => {
         console.log('Error: ', error);
@@ -277,7 +277,7 @@ function disconnectDevice() {
 
     welcomeTitle.textContent = 'Device Disconnected';
     welcomeMessage.textContent = 'Please press connect button';
-    welcomeCard.classList.contains('visually-hidden') && mainCard.classList.remove('visually-hidden');
+    welcomeCard.classList.contains('visually-hidden') && welcomeCard.classList.remove('visually-hidden');
 
     connectButton.classList.contains('visually-hidden') && connectButton.classList.remove('visually-hidden');
     disconnectButton.classList.contains('visually-hidden') || disconnectButton.classList.add('visually-hidden');
