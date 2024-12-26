@@ -60,7 +60,7 @@ var mqttPassCharacteristic;
 
 // Connect Button (search for BLE Devices only if BLE is available)
 connectButton.addEventListener('click', (event) => {
-    if (isWebBluetoothEnabled()){
+    if (isWebBluetoothEnabled()) {
         connectToDevice();
     }
 });
@@ -89,7 +89,9 @@ mqttPassInput.addEventListener('change', () => writeOnCharacteristic(bleServiceM
 function isWebBluetoothEnabled() {
     if (!navigator.bluetooth) {
         console.log('Web Bluetooth API is not available in this browser!');
-        bleStateContainer.innerHTML = "Web Bluetooth API is not available in this browser/device!";
+        //bleStateContainer.innerHTML = "Web Bluetooth API is not available in this browser/device!";
+        welcomeTitle.textContent = 'Sorry';
+        welcomeText.textContent = 'Web Bluetooth API is not available in this browser!';
         return false
     }
     console.log('Web Bluetooth API supported in this browser.');
@@ -99,6 +101,13 @@ function isWebBluetoothEnabled() {
 // Connect to BLE Device and Enable Notifications
 function connectToDevice() {
     console.log('Initializing Bluetooth...');
+
+    if (!navigator.bluetooth) {
+        console.log('Web Bluetooth API is not available in this browser!');
+        return false;
+    }
+
+    console.log('Web Bluetooth API supported in this browser.');
 
     navigator.bluetooth.requestDevice({
         filters: [{name: deviceName}],
@@ -312,3 +321,5 @@ function disconnectDevice() {
         window.alert("Bluetooth is not connected.")
     }
 }
+
+isWebBluetoothEnabled();
