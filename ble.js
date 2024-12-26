@@ -57,7 +57,7 @@ var mqttUserCharacteristic;
 var mqttPassCharacteristic;
 
 // Connect Button (search for BLE Devices only if BLE is available)
-connectButton.addEventListener('click', (event) => connectToDevice);
+connectButton.addEventListener('click', connectToDevice);
 // Disconnect Button
 disconnectButton.addEventListener('click', disconnectDevice);
 
@@ -112,11 +112,12 @@ function connectToDevice() {
     })
     .then(device => {
         console.log('Device Selected:', device.name);
+
         // bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         // bleStateContainer.style.color = "#24af37";
 
         welcomeTitle.textContent = 'Connected';
-        welcomeMessage.textContent = 'Loading...';
+        welcomeMessage.textContent = 'Please wait until parameters are loaded';
 
         connectButton.classList.toggle('visually-hidden');
         disconnectButton.classList.toggle('visually-hidden');
@@ -212,6 +213,8 @@ function onDisconnected(event) {
 
     // bleStateContainer.innerHTML = "Device disconnected";
     // bleStateContainer.style.color = "#d13a30";
+    welcomeTitle.textContent = 'Device disconnected';
+    welcomeMessage.textContent = 'Please wait...';
 
     connectToDevice();
 }
@@ -261,7 +264,7 @@ function disconnectDevice() {
         wifiCard.classList.toggle('visually-hidden');
         mqttCard.classList.toggle('visually-hidden');
 
-        welcomeTitle.textContent = 'Welcome';
+        welcomeTitle.textContent = 'Device Disconnected';
         welcomeMessage.textContent = 'Please press connect button';
         welcomeCard.classList.toggle('visually-hidden');
 
