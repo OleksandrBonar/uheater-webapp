@@ -116,12 +116,15 @@ function connectToDevice() {
         // bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         // bleStateContainer.style.color = "#24af37";
 
+        errorCard.toggleList.contains('visually-hidden') || errorCard.toggleList.add('visually-hidden');
+
         welcomeTitle.textContent = 'Connected';
         welcomeMessage.textContent = 'Please wait until parameters are loaded';
+        welcomeCard.toggleList.contains('visually-hidden') && welcomeCard.toggleList.remove('visually-hidden');
 
-        connectButton.classList.toggle('visually-hidden');
-        disconnectButton.classList.toggle('visually-hidden');
-        rebootButton.classList.toggle('visually-hidden');
+        connectButton.classList.contains('visually-hidden') || connectButton.classList.add('visually-hidden');
+        disconnectButton.classList.contains('visually-hidden') && disconnectButton.classList.remove('visually-hidden');
+        rebootButton.classList.contains('visually-hidden') && rebootButton.classList.remove('visually-hidden');
         
         device.addEventListener('gattservicedisconnected', onDisconnected);
         
@@ -212,8 +215,10 @@ function connectToDevice() {
         errorMessage.textContent = error;
         errorCard.classList.contains('visually-hidden') && errorCard.classList.remove('visually-hidden');
 
-        if (!bleServer || !bleServer.connected) {
-            actionsContainer.classList.contains('visually-hidden') || actionsContainer.classList.add('visually-hidden');
+        if (!(bleServer && bleServer.connected)) {
+            connectButton.classList.contains('visually-hidden') && connectButton.classList.remove('visually-hidden');
+            disconnectButton.classList.contains('visually-hidden') || disconnectButton.classList.add('visually-hidden');
+            rebootButton.classList.contains('visually-hidden') || rebootButton.classList.add('visually-hidden');
         }
     });
 }
