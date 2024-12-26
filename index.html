@@ -54,13 +54,16 @@
   </svg>
 
   <div class="container mt-4">
-    <nav class="navbar bg-body-tertiary rounded">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded">
       <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#heater"/></svg>
+          <span class="fs-4">uHeater</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="navbar-collapse d-lg-flex collapse">
-          <a class="navbar-brand d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none" href="#">
-            <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#heater"/></svg>
-            <span class="fs-4">uHeater</span>
-          </a>
           <div class="navbar-nav col-lg-6 justify-content-lg-center visually-hidden" id="mainModeContainer"></div>
           <div class="d-lg-flex col-lg-3 justify-content-lg-end">
             <button type="button" class="btn btn-primary" id="connectBleButton">Connect</button>
