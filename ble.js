@@ -185,13 +185,6 @@ function connectToDevice() {
     ]) => {
         const decoder = new TextDecoder();
 
-        const decodedValueMainTmpa = new TextDecoder().;
-        const decodedValueMainTmpb = new TextDecoder().decode(valueMainTmpb);
-        const decodedValueWifiSsid = new TextDecoder().decode(valueWifiSsid);
-        const decodedValueMqttHost = new TextDecoder().decode(valueMqttHost);
-        const decodedValueMqttPort = new TextDecoder().decode(valueMqttPort);
-        const decodedValueMqttUser = new TextDecoder().decode(valueMqttUser);
-
         mainModeContainer.innerHTML = decoder.decode(valueMainMode);
         mainModeContainer.classList.toggle('visually-hidden');
 
