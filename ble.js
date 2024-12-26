@@ -5,17 +5,11 @@ const mqttCard = document.getElementById('mqttCard');
 const connectButton = document.getElementById('connectBleButton');
 const disconnectButton = document.getElementById('disconnectBleButton');
 const rebootButton = document.getElementById('rebootBleButton');
-const onButton = document.getElementById('onButton');
-const offButton = document.getElementById('offButton');
-const retrievedValue = document.getElementById('valueContainer');
 
 const mainModeContainer = document.getElementById('mainModeContainer');
 const welcomeContainer = document.getElementById('welcome');
 const welcomeTitle = document.getElementById('welcomeTitle');
 const welcomeText = document.getElementById('welcomeText');
-
-const latestValueSent = document.getElementById('valueSent');
-const bleStateContainer = document.getElementById('bleState');
 
 const mainTmpaInput = document.getElementById('mainTmpaInput');
 const mainTmpbInput = document.getElementById('mainTmpbInput');
@@ -47,7 +41,6 @@ var bleServer;
 var bleServiceMain;
 var bleServiceWifi;
 var bleServiceMqtt;
-var sensorCharacteristic;
 var mainModeCharacteristic;
 var mainTmpaCharacteristic;
 var mainTmpbCharacteristic;
@@ -68,10 +61,7 @@ connectButton.addEventListener('click', (event) => {
 // Disconnect Button
 disconnectButton.addEventListener('click', disconnectDevice);
 
-// Write to the ESP32 LED Characteristic
-// onButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 1));
-// offButton.addEventListener('click', () => writeOnCharacteristic(ledCharacteristic, 0));
-
+// Write to the ESP32 Characteristic
 rebootButton.addEventListener('click', () => writeOnCharacteristic(bleServiceMain, mainBootCharacteristicUuid, 'Y'));
 
 mainTmpaInput.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainTmpaCharacteristicUuid, mainTmpaInput.value));
@@ -268,11 +258,9 @@ function writeOnCharacteristic(service, uuid, value) {
             .then(characteristic => {
                 console.log("Found the characteristic: ", characteristic.uuid);
                 const enco = new TextEncoder().encode(value);
-                // const data = new Uint8Array([enco]);
                 return characteristic.writeValue(enco);
             })
             .then(() => {
-                // latestValueSent.innerHTML = value;
                 console.log("Value written to the characteristic:", value);
             })
             .catch(error => {
