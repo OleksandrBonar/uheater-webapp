@@ -216,6 +216,8 @@ function connectToDevice() {
         errorCard.classList.contains('visually-hidden') && errorCard.classList.remove('visually-hidden');
 
         if (!(bleServer && bleServer.connected)) {
+            console.log('Device disconnected');
+
             connectButton.classList.contains('visually-hidden') && connectButton.classList.remove('visually-hidden');
             disconnectButton.classList.contains('visually-hidden') || disconnectButton.classList.add('visually-hidden');
             rebootButton.classList.contains('visually-hidden') || rebootButton.classList.add('visually-hidden');
