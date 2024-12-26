@@ -265,17 +265,17 @@ function disconnectDevice() {
         window.alert('Bluetooth is not connected.');
     }
 
-    mainCard.classList.contains('visually-hidden') ? mainCard.classList.remove('visually-hidden'):;
-    wifiCard.classList.contains('visually-hidden') ? mainCard.classList.remove('visually-hidden'):;
-    mqttCard.classList.contains('visually-hidden') ? mainCard.classList.remove('visually-hidden'):;
+    mainCard.classList.contains('visually-hidden') || mainCard.classList.add('visually-hidden');
+    wifiCard.classList.contains('visually-hidden') || wifiCard.classList.add('visually-hidden');
+    mqttCard.classList.contains('visually-hidden') || mqttCard.classList.add('visually-hidden'):;
 
     welcomeTitle.textContent = 'Device Disconnected';
     welcomeMessage.textContent = 'Please press connect button';
-    welcomeCard.classList.contains('visually-hidden') ? mainCard.classList.remove('visually-hidden'):;
+    welcomeCard.classList.contains('visually-hidden') && mainCard.classList.remove('visually-hidden');
 
-    connectButton.classList.contains('visually-hidden') ? connectButton.classList.remove('visually-hidden') :;
-    disconnectButton.classList.contains('visually-hidden') ?: disconnectButton.classList.add('visually-hidden');
-    rebootButton.classList.contains('visually-hidden') ?: rebootButton.classList.add('visually-hidden');
+    connectButton.classList.contains('visually-hidden') && connectButton.classList.remove('visually-hidden');
+    disconnectButton.classList.contains('visually-hidden') || disconnectButton.classList.add('visually-hidden');
+    rebootButton.classList.contains('visually-hidden') || rebootButton.classList.add('visually-hidden');
 }
 
 isWebBluetoothEnabled();
