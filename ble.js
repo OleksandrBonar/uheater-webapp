@@ -211,6 +211,10 @@ function connectToDevice() {
         errorTitle.textContent = 'Error';
         errorMessage.textContent = error;
         errorCard.classList.contains('visually-hidden') && errorCard.classList.remove('visually-hidden');
+
+        if (!bleServer || !bleServer.connected) {
+            actionsContainer.classList.contains('visually-hidden') || actionsContainer.classList.add('visually-hidden');
+        }
     });
 }
 
