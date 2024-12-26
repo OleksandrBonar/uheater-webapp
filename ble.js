@@ -259,23 +259,23 @@ function disconnectDevice() {
 
         // bleStateContainer.innerHTML = "Device Disconnected";
         // bleStateContainer.style.color = "#d13a30";
-
-        mainCard.classList.toggle('visually-hidden');
-        wifiCard.classList.toggle('visually-hidden');
-        mqttCard.classList.toggle('visually-hidden');
-
-        welcomeTitle.textContent = 'Device Disconnected';
-        welcomeMessage.textContent = 'Please press connect button';
-        welcomeCard.classList.toggle('visually-hidden');
-
-        connectButton.classList.toggle('visually-hidden');
-        disconnectButton.classList.toggle('visually-hidden');
-        rebootButton.classList.toggle('visually-hidden');
     } else {
         // Throw an error if Bluetooth is not connected
         console.error('Bluetooth is not connected.');
         window.alert('Bluetooth is not connected.');
     }
+
+    mainCard.classList.toggle('visually-hidden');
+    wifiCard.classList.toggle('visually-hidden');
+    mqttCard.classList.toggle('visually-hidden');
+
+    welcomeTitle.textContent = 'Device Disconnected';
+    welcomeMessage.textContent = 'Please press connect button';
+    welcomeCard.classList.toggle('visually-hidden');
+
+    connectButton.classList.toggle('visually-hidden');
+    disconnectButton.classList.toggle('visually-hidden');
+    rebootButton.classList.toggle('visually-hidden');
 }
 
 isWebBluetoothEnabled();
