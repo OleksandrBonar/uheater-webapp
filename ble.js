@@ -267,7 +267,7 @@ function disconnectDevice() {
 
     mainCard.classList.contains('visually-hidden') || mainCard.classList.add('visually-hidden');
     wifiCard.classList.contains('visually-hidden') || wifiCard.classList.add('visually-hidden');
-    mqttCard.classList.contains('visually-hidden') || mqttCard.classList.add('visually-hidden'):;
+    mqttCard.classList.contains('visually-hidden') || mqttCard.classList.add('visually-hidden');
 
     welcomeTitle.textContent = 'Device Disconnected';
     welcomeMessage.textContent = 'Please press connect button';
