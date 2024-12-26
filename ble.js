@@ -7,9 +7,14 @@ const disconnectButton = document.getElementById('disconnectBleButton');
 const rebootButton = document.getElementById('rebootBleButton');
 
 const mainModeContainer = document.getElementById('mainModeContainer');
-const welcomeContainer = document.getElementById('welcome');
+const actionsContainer = document.getElementById('actionsContainer');
+
+const errorCard = document.getElementById('errorCard');
+const errorTitle = document.getElementById('errorTitle');
+const errorMessage = document.getElementById('errorMessage');
+const welcomeCard = document.getElementById('welcomeCard');
 const welcomeTitle = document.getElementById('welcomeTitle');
-const welcomeText = document.getElementById('welcomeText');
+const welcomeMessage = document.getElementById('welcomeMessage');
 
 const mainTmpaInput = document.getElementById('mainTmpaInput');
 const mainTmpbInput = document.getElementById('mainTmpbInput');
@@ -52,12 +57,7 @@ var mqttUserCharacteristic;
 var mqttPassCharacteristic;
 
 // Connect Button (search for BLE Devices only if BLE is available)
-connectButton.addEventListener('click', (event) => {
-    if (isWebBluetoothEnabled()) {
-        connectToDevice();
-    }
-});
-
+connectButton.addEventListener('click', (event) => connectToDevice);
 // Disconnect Button
 disconnectButton.addEventListener('click', disconnectDevice);
 
@@ -79,12 +79,19 @@ mqttPassInput.addEventListener('change', () => writeOnCharacteristic(bleServiceM
 function isWebBluetoothEnabled() {
     if (!navigator.bluetooth) {
         console.log('Web Bluetooth API is not available in this browser!');
-        //bleStateContainer.innerHTML = "Web Bluetooth API is not available in this browser/device!";
-        welcomeTitle.textContent = 'Sorry';
-        welcomeText.textContent = 'Web Bluetooth API is not available in this browser!';
+
+        errorTitle.textContent = 'Sorry';
+        errorMessage.textContent = 'Web Bluetooth API is not available in this browser!';
+
+        welcomeCard.classList.toggle('visually-hidden');
+        errorCard.classList.toggle('visually-hidden');
+        actionsContainer.classList.toggle('visually-hidden');
+
         return false
     }
+
     console.log('Web Bluetooth API supported in this browser.');
+
     return true
 }
 
@@ -108,12 +115,12 @@ function connectToDevice() {
         // bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         // bleStateContainer.style.color = "#24af37";
 
-        welcomeTitle.textContent = 'Connected!';
-        welcomeText.textContent = 'Loading...';
+        welcomeTitle.textContent = 'Connected';
+        welcomeMessage.textContent = 'Loading...';
 
-        connectButton.classList.toggle("visually-hidden");
-        disconnectButton.classList.toggle("visually-hidden");
-        rebootButton.classList.toggle("visually-hidden");
+        connectButton.classList.toggle('visually-hidden');
+        disconnectButton.classList.toggle('visually-hidden');
+        rebootButton.classList.toggle('visually-hidden');
         
         device.addEventListener('gattservicedisconnected', onDisconnected);
         
@@ -121,7 +128,7 @@ function connectToDevice() {
     })
     .then(gattServer => {
         bleServer = gattServer;
-        console.log("Connected to GATT Server");
+        console.log('Connected to GATT Server');
 
         serviceMain = bleServer.getPrimaryService(mainServiceUuid);
         serviceWifi = bleServer.getPrimaryService(wifiServiceUuid);
@@ -131,13 +138,8 @@ function connectToDevice() {
     })
     .then(([serviceMain, serviceWifi, serviceMqtt]) => {
         bleServiceMain = serviceMain;
-        console.log("Service discovered:", serviceMain.uuid);
-
         bleServiceWifi = serviceWifi;
-        console.log("Service discovered:", serviceWifi.uuid);
-
         bleServiceMqtt = serviceMqtt;
-        console.log("Service discovered:", serviceMqtt.uuid);
 
         characteristicMainMode = serviceMain.getCharacteristic(mainModeCharacteristicUuid);
         characteristicMainTmpa = serviceMain.getCharacteristic(mainTmpaCharacteristicUuid);
@@ -160,21 +162,14 @@ function connectToDevice() {
         characteristicWifiSsid,
         characteristicMqttHost, characteristicMqttPort, characteristicMqttUser
     ]) => {
-        console.log("Characteristic discovered: ", characteristicMainMode.uuid);
         mainModeCharacteristic = characteristicMainMode;
-        console.log("Characteristic discovered: ", characteristicMainTmpa.uuid);
         mainTmpaCharacteristic = characteristicMainTmpa;
-        console.log("Characteristic discovered: ", characteristicMainTmpb.uuid);
         mainTmpbCharacteristic = characteristicMainTmpb;
 
-        console.log("Characteristic discovered: ", characteristicWifiSsid.uuid);
         wifiSsidCharacteristic = characteristicWifiSsid;
 
-        console.log("Characteristic discovered: ", characteristicMqttHost.uuid);
         mqttHostCharacteristic = characteristicMqttHost;
-        console.log("Characteristic discovered: ", characteristicMqttPort.uuid);
         mqttPortCharacteristic = characteristicMqttPort;
-        console.log("Characteristic discovered: ", characteristicMqttUser.uuid);
         mqttUserCharacteristic = characteristicMqttUser;
 
         return Promise.all([
@@ -188,125 +183,102 @@ function connectToDevice() {
         valueWifiSsid,
         valueMqttHost, valueMqttPort, valueMqttUser,
     ]) => {
-        const decodedValueMainMode = new TextDecoder().decode(valueMainMode);
-        const decodedValueMainTmpa = new TextDecoder().decode(valueMainTmpa);
+        const decoder = new TextDecoder();
+
+        const decodedValueMainTmpa = new TextDecoder().;
         const decodedValueMainTmpb = new TextDecoder().decode(valueMainTmpb);
         const decodedValueWifiSsid = new TextDecoder().decode(valueWifiSsid);
         const decodedValueMqttHost = new TextDecoder().decode(valueMqttHost);
         const decodedValueMqttPort = new TextDecoder().decode(valueMqttPort);
         const decodedValueMqttUser = new TextDecoder().decode(valueMqttUser);
 
-        mainModeContainer.innerHTML = decodedValueMainMode;
-        mainModeContainer.classList.toggle("visually-hidden");
+        mainModeContainer.innerHTML = decoder.decode(valueMainMode);
+        mainModeContainer.classList.toggle('visually-hidden');
 
-        mainTmpaInput.value = decodedValueMainTmpa;
-        mainTmpbInput.value = decodedValueMainTmpb;
-        mainCard.classList.toggle("visually-hidden");
+        mainTmpaInput.value = decoder.decode(valueMainTmpa);
+        mainTmpbInput.value = decoder.decode(valueMainTmpb);
+        mainCard.classList.toggle('visually-hidden');
 
-        wifiSsidInput.value = decodedValueWifiSsid;
-        wifiCard.classList.toggle("visually-hidden");
+        wifiSsidInput.value = decoder.decode(valueWifiSsid);
+        wifiCard.classList.toggle('visually-hidden');
 
-        mqttHostInput.value = decodedValueMqttHost;
-        mqttPortInput.value = decodedValueMqttPort;
-        mqttUserInput.value = decodedValueMqttUser;
-        mqttCard.classList.toggle("visually-hidden");
+        mqttHostInput.value = decoder.decode(valueMqttHost);
+        mqttPortInput.value = decoder.decode(valueMqttPort);
+        mqttUserInput.value = decoder.decode(valueMqttUser);
+        mqttCard.classList.toggle('visually-hidden');
 
-        welcome.classList.toggle("visually-hidden");
+        welcomeCard.classList.toggle('visually-hidden');
     })
     .catch(error => {
         console.log('Error: ', error);
     });
-    //})
-    // .then(characteristic => {
-    //     console.log("Characteristic discovered:", characteristic.uuid);
-    //     sensorCharacteristicFound = characteristic;
-    //     characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicChange);
-    //     characteristic.startNotifications();
-    //     console.log("Notifications Started.");
-    //     return characteristic.readValue();
-    // })
-    // .then(value => {
-    //     console.log("Read value: ", value);
-    //     const decodedValue = new TextDecoder().decode(value);
-    //     console.log("Decoded value: ", decodedValue);
-    //     retrievedValue.innerHTML = decodedValue;
-    // })
-    // .catch(error => {
-    //     console.log('Error: ', error);
-    // });
 }
 
 function onDisconnected(event) {
     console.log('Device Disconnected:', event.target.device.name);
+
     // bleStateContainer.innerHTML = "Device disconnected";
     // bleStateContainer.style.color = "#d13a30";
 
     connectToDevice();
 }
 
-function handleCharacteristicChange(event) {
-    const newValueReceived = new TextDecoder().decode(event.target.value);
-    console.log("Characteristic value changed: ", newValueReceived);
-    retrievedValue.innerHTML = newValueReceived;
-    timestampContainer.innerHTML = getDateTime();
-}
-
 function writeOnCharacteristic(service, uuid, value) {
-    console.log("writeOnCharacteristic");
     if (bleServer && bleServer.connected) {
         service.getCharacteristic(uuid)
             .then(characteristic => {
                 console.log("Found the characteristic: ", characteristic.uuid);
-                const enco = new TextEncoder().encode(value);
-                return characteristic.writeValue(enco);
+                const valueEncoded = new TextEncoder().encode(value);
+                return characteristic.writeValue(valueEncoded);
             })
             .then(() => {
-                console.log("Value written to the characteristic:", value);
+                console.log('Value written to the characteristic: ', value);
             })
             .catch(error => {
-                console.error("Error writing to the characteristic: ", error);
+                console.error('Error writing to the characteristic: ', error);
             });
     } else {
-        console.error("Bluetooth is not connected. Cannot write to characteristic.")
-        window.alert("Bluetooth is not connected. Cannot write to characteristic. \n Connect to BLE first!")
+        console.error('Bluetooth is not connected. Cannot write to characteristic.');
+        window.alert("Bluetooth is not connected. Cannot write to characteristic. \n Connect to BLE first!");
     }
 }
 
 function disconnectDevice() {
-    console.log("Disconnect Device.");
+    console.log('Disconnect Device.');
     if (bleServer && bleServer.connected) {
         if (sensorCharacteristic) {
             sensorCharacteristic.stopNotifications()
                 .then(() => {
-                    console.log("Notifications Stopped");
+                    console.log('Notifications Stopped');
                 })
                 .catch(error => {
-                    console.log("An error occurred:", error);
+                    console.log('An error occurred: ', error);
                 });
         } else {
-            console.log("No characteristic found to disconnect.");
+            console.log('No characteristic found to disconnect.');
         }
-        
+
         bleServer.disconnect();
-        console.log("Device Disconnected");
+        console.log('Device Disconnected');
+
         // bleStateContainer.innerHTML = "Device Disconnected";
         // bleStateContainer.style.color = "#d13a30";
 
-        mainCard.classList.toggle("visually-hidden");
-        wifiCard.classList.toggle("visually-hidden");
-        mqttCard.classList.toggle("visually-hidden");
+        mainCard.classList.toggle('visually-hidden');
+        wifiCard.classList.toggle('visually-hidden');
+        mqttCard.classList.toggle('visually-hidden');
 
         welcomeTitle.textContent = 'Welcome';
-        welcomeText.textContent = 'Please press connect button';
-        welcome.classList.toggle("visually-hidden");
+        welcomeMessage.textContent = 'Please press connect button';
+        welcomeCard.classList.toggle('visually-hidden');
 
-        connectButton.classList.toggle("visually-hidden");
-        disconnectButton.classList.toggle("visually-hidden");
-        rebootButton.classList.toggle("visually-hidden");
+        connectButton.classList.toggle('visually-hidden');
+        disconnectButton.classList.toggle('visually-hidden');
+        rebootButton.classList.toggle('visually-hidden');
     } else {
         // Throw an error if Bluetooth is not connected
-        console.error("Bluetooth is not connected.");
-        window.alert("Bluetooth is not connected.")
+        console.error('Bluetooth is not connected.');
+        window.alert('Bluetooth is not connected.');
     }
 }
 
