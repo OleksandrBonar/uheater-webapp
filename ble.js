@@ -116,11 +116,11 @@ function connectToDevice() {
         // bleStateContainer.innerHTML = 'Connected to device ' + device.name;
         // bleStateContainer.style.color = "#24af37";
 
-        errorCard.toggleList.contains('visually-hidden') || errorCard.toggleList.add('visually-hidden');
+        errorCard.classList.contains('visually-hidden') || errorCard.classList.add('visually-hidden');
 
         welcomeTitle.textContent = 'Connected';
         welcomeMessage.textContent = 'Please wait until parameters are loaded';
-        welcomeCard.toggleList.contains('visually-hidden') && welcomeCard.toggleList.remove('visually-hidden');
+        welcomeCard.classList.contains('visually-hidden') && welcomeCard.classList.remove('visually-hidden');
 
         connectButton.classList.contains('visually-hidden') || connectButton.classList.add('visually-hidden');
         disconnectButton.classList.contains('visually-hidden') && disconnectButton.classList.remove('visually-hidden');
