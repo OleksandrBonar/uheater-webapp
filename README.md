@@ -1,1 +1,1 @@
-# uHeater WebApp
+# uheater-webapp
