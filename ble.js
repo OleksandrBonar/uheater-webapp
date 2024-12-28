@@ -247,6 +247,10 @@ function writeOnCharacteristic(service, uuid, value) {
             })
             .then(() => {
                 console.log('Value written to the characteristic: ', value);
+
+                if (value == 'Y') {
+                    window.location.reload();
+                }
             })
             .catch(error => {
                 console.error('Error writing to the characteristic: ', error);
