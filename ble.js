@@ -242,15 +242,18 @@ function writeOnCharacteristic(service, uuid, value) {
         service.getCharacteristic(uuid)
             .then(characteristic => {
                 console.log("Found the characteristic: ", characteristic.uuid);
+
+                if (uuid == mainBootCharacteristicUuid && value == 'Y') {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 10000);
+                }
+
                 const valueEncoded = new TextEncoder().encode(value);
                 return characteristic.writeValue(valueEncoded);
             })
             .then(() => {
                 console.log('Value written to the characteristic: ', value);
-
-                if (value == 'Y') {
-                    window.location.reload();
-                }
             })
             .catch(error => {
                 console.error('Error writing to the characteristic: ', error);
