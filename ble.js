@@ -246,7 +246,7 @@ function writeOnCharacteristic(service, uuid, value) {
                 if (uuid == mainBootCharacteristicUuid && value == 'Y') {
                     setTimeout(function() {
                         window.location.reload();
-                    }, 10000);
+                    }, 1500);
                 }
 
                 const valueEncoded = new TextEncoder().encode(value);
