@@ -95,6 +95,14 @@
       </div>
       <div class="card-body">
         <form class="row g-3">
+          <div class="col-md-12">
+            <label for="main_mode" class="form-label">Mode</label>
+            <select class="form-control" id="mainModeSelect" value="OFF">
+              <option value="OFF">Off</option>
+              <option value="BOLIER">Boiler</option>
+              <option value="FLOOR">Floor</option>
+            </select>
+          </div>
           <div class="col-md-6">
             <label for="main_tmpa" class="form-label">Boiler</label>
             <input type="number" class="form-control" id="mainTmpaInput" value="70">
