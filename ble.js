@@ -189,7 +189,7 @@ function connectToDevice() {
     ]) => {
         const decoder = new TextDecoder();
 
-        mainModeContainer.innerHTML = decoder.decode(valueMainMode);
+        mainModeContainer.textContent = decoder.decode(valueMainMode);
         mainModeContainer.classList.contains('visually-hidden') && mainModeContainer.remove('visually-hidden');
 
         mainTmpaInput.value = decoder.decode(valueMainTmpa);
