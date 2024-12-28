@@ -259,17 +259,17 @@ function writeOnCharacteristic(service, uuid, value) {
 function disconnectDevice() {
     console.log('Disconnect Device.');
     if (bleServer && bleServer.connected) {
-        if (sensorCharacteristic) {
-            sensorCharacteristic.stopNotifications()
-                .then(() => {
-                    console.log('Notifications Stopped');
-                })
-                .catch(error => {
-                    console.log('An error occurred: ', error);
-                });
-        } else {
-            console.log('No characteristic found to disconnect.');
-        }
+        // if (sensorCharacteristic) {
+        //     sensorCharacteristic.stopNotifications()
+        //         .then(() => {
+        //             console.log('Notifications Stopped');
+        //         })
+        //         .catch(error => {
+        //             console.log('An error occurred: ', error);
+        //         });
+        // } else {
+        //     console.log('No characteristic found to disconnect.');
+        // }
 
         bleServer.disconnect();
         console.log('Device Disconnected');
