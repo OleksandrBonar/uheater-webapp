@@ -16,6 +16,7 @@ const welcomeCard = document.getElementById('welcomeCard');
 const welcomeTitle = document.getElementById('welcomeTitle');
 const welcomeMessage = document.getElementById('welcomeMessage');
 
+const mainModeSelect = document.getElementById('mainModeSelect');
 const mainTmpaInput = document.getElementById('mainTmpaInput');
 const mainTmpbInput = document.getElementById('mainTmpbInput');
 const wifiSsidInput = document.getElementById('wifiSsidInput');
@@ -63,6 +64,8 @@ disconnectButton.addEventListener('click', disconnectDevice);
 
 // Write to the ESP32 Characteristic
 rebootButton.addEventListener('click', () => writeOnCharacteristic(bleServiceMain, mainBootCharacteristicUuid, 'Y'));
+
+mainModeSelect.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainModeCharacteristicUuid, mainModeSelect.value));
 
 mainTmpaInput.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainTmpaCharacteristicUuid, mainTmpaInput.value));
 mainTmpbInput.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainTmpbCharacteristicUuid, mainTmpbInput.value));
@@ -189,9 +192,7 @@ function connectToDevice() {
     ]) => {
         const decoder = new TextDecoder();
 
-        mainModeContainer.innerHtml = decoder.decode(valueMainMode);
-        mainModeContainer.classList.contains('visually-hidden') && mainModeContainer.remove('visually-hidden');
-
+        mainModeSelect.value = decoder.decode(valueMainMode);
         mainTmpaInput.value = decoder.decode(valueMainTmpa);
         mainTmpbInput.value = decoder.decode(valueMainTmpb);
         mainCard.classList.contains('visually-hidden') && mainCard.classList.remove('visually-hidden');
