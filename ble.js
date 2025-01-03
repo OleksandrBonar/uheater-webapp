@@ -93,6 +93,20 @@ function isWebBluetoothEnabled() {
         return false
     }
 
+    const btPermission = await navigator.permissions.query({ name: "bluetooth" });
+    if (btPermission.state == "denied") {
+        console.log('Web Bluetooth API is not granted for this browser!');
+
+        errorTitle.textContent = 'Sorry';
+        errorMessage.textContent = 'Web Bluetooth API is not granted for this browser!';
+
+        welcomeCard.classList.toggle('visually-hidden');
+        errorCard.classList.toggle('visually-hidden');
+        actionsContainer.classList.toggle('visually-hidden');
+
+        return false
+    }
+
     console.log('Web Bluetooth API supported in this browser.');
 
     return true
