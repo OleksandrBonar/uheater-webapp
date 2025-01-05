@@ -1,5 +1,3 @@
-const btPermission = await navigator.permissions.query({ name: 'bluetooth' });
-
 // DOM Elements
 const mainCard = document.getElementById('mainCard');
 const wifiCard = document.getElementById('wifiCard');
@@ -99,18 +97,19 @@ function isWebBluetoothEnabled() {
         return false
     }
 
-    if (btPermission.state == 'denied') {
-        console.log('Web Bluetooth API is not granted for this browser!');
+    // const btPermission = await navigator.permissions.query({ name: 'bluetooth' });
+    // if (btPermission.state == 'denied') {
+    //     console.log('Web Bluetooth API is not granted for this browser!');
 
-        errorTitle.textContent = 'Sorry';
-        errorMessage.textContent = 'Web Bluetooth API is not granted for this browser!';
+    //     errorTitle.textContent = 'Sorry';
+    //     errorMessage.textContent = 'Web Bluetooth API is not granted for this browser!';
 
-        welcomeCard.classList.toggle('visually-hidden');
-        errorCard.classList.toggle('visually-hidden');
-        actionsContainer.classList.toggle('visually-hidden');
+    //     welcomeCard.classList.toggle('visually-hidden');
+    //     errorCard.classList.toggle('visually-hidden');
+    //     actionsContainer.classList.toggle('visually-hidden');
 
-        return false
-    }
+    //     return false
+    // }
 
     console.log('Web Bluetooth API supported in this browser.');
 
