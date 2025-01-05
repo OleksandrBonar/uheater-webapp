@@ -140,7 +140,7 @@ function connectToDevice() {
         errorCard.classList.contains('visually-hidden') || errorCard.classList.add('visually-hidden');
 
         welcomeTitle.textContent = 'Connected';
-        welcomeMessage.textContent = 'Please wait until parameters are loaded';
+        welcomeMessage.textContent = 'Please wait until parameters are loaded...';
         welcomeCard.classList.contains('visually-hidden') && welcomeCard.classList.remove('visually-hidden');
 
         connectButton.classList.contains('visually-hidden') || connectButton.classList.add('visually-hidden');
