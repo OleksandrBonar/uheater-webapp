@@ -19,6 +19,7 @@ const welcomeMessage = document.getElementById('welcomeMessage');
 const mainModeSelect = document.getElementById('mainModeSelect');
 const mainTmpaInput = document.getElementById('mainTmpaInput');
 const mainTmpbInput = document.getElementById('mainTmpbInput');
+const mainTmpcInput = document.getElementById('mainTmpcInput');
 const wifiSsidInput = document.getElementById('wifiSsidInput');
 const mqttHostInput = document.getElementById('mqttHostInput');
 const mqttPortInput = document.getElementById('mqttPortInput');
@@ -35,6 +36,7 @@ var mainBootCharacteristicUuid = '44d8a42d-9720-4adb-878d-5922094b247c';
 var mainModeCharacteristicUuid = '85f369a6-4581-4d30-854f-65d4f9240cc6';
 var mainTmpaCharacteristicUuid = '9bf61fc0-f498-4a91-9077-f0997b9a25af';
 var mainTmpbCharacteristicUuid = '0655d6c3-6e50-4c84-ab94-6903e1176b72';
+var mainTmpcCharacteristicUuid = '1e21d6f5-ccb1-42a3-9773-52060d12f358';
 var wifiSsidCharacteristicUuid = '9c298009-647c-4a4d-86f7-6cd0bf2ceac0';
 var wifiPassCharacteristicUuid = '9d0a19d9-049b-445e-acf1-2c9c74dad82e';
 var mqttHostCharacteristicUuid = '47ecdd61-bb6f-47c7-abbc-d22a66c8bad4';
@@ -50,6 +52,7 @@ var bleServiceMqtt;
 var mainModeCharacteristic;
 var mainTmpaCharacteristic;
 var mainTmpbCharacteristic;
+var mainTmpcCharacteristic;
 var wifiSsidCharacteristic;
 var wifiPassCharacteristic;
 var mqttHostCharacteristic;
@@ -69,6 +72,7 @@ mainModeSelect.addEventListener('change', () => writeOnCharacteristic(bleService
 
 mainTmpaInput.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainTmpaCharacteristicUuid, mainTmpaInput.value));
 mainTmpbInput.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainTmpbCharacteristicUuid, mainTmpbInput.value));
+mainTmpcInput.addEventListener('change', () => writeOnCharacteristic(bleServiceMain, mainTmpcCharacteristicUuid, mainTmpcInput.value));
 
 wifiSsidInput.addEventListener('change', () => writeOnCharacteristic(bleServiceWifi, wifiSsidCharacteristicUuid, wifiSsidInput.value));
 wifiPassInput.addEventListener('change', () => writeOnCharacteristic(bleServiceWifi, wifiPassCharacteristicUuid, wifiPassInput.value));
@@ -165,6 +169,7 @@ function connectToDevice() {
         characteristicMainMode = serviceMain.getCharacteristic(mainModeCharacteristicUuid);
         characteristicMainTmpa = serviceMain.getCharacteristic(mainTmpaCharacteristicUuid);
         characteristicMainTmpb = serviceMain.getCharacteristic(mainTmpbCharacteristicUuid);
+        characteristicMainTmpc = serviceMain.getCharacteristic(mainTmpcCharacteristicUuid);
 
         characteristicWifiSsid = serviceWifi.getCharacteristic(wifiSsidCharacteristicUuid);
 
@@ -173,19 +178,20 @@ function connectToDevice() {
         characteristicMqttUser = serviceMqtt.getCharacteristic(mqttUserCharacteristicUuid);
 
         return Promise.all([
-            characteristicMainMode, characteristicMainTmpa, characteristicMainTmpb,
+            characteristicMainMode, characteristicMainTmpa, characteristicMainTmpb, characteristicMainTmpc,
             characteristicWifiSsid,
             characteristicMqttHost, characteristicMqttPort, characteristicMqttUser
         ]);
     })
     .then(([
-        characteristicMainMode, characteristicMainTmpa, characteristicMainTmpb,
+        characteristicMainMode, characteristicMainTmpa, characteristicMainTmpb, characteristicMainTmpc,
         characteristicWifiSsid,
         characteristicMqttHost, characteristicMqttPort, characteristicMqttUser
     ]) => {
         mainModeCharacteristic = characteristicMainMode;
         mainTmpaCharacteristic = characteristicMainTmpa;
         mainTmpbCharacteristic = characteristicMainTmpb;
+        mainTmpcCharacteristic = characteristicMainTmpc;
 
         wifiSsidCharacteristic = characteristicWifiSsid;
 
@@ -194,13 +200,13 @@ function connectToDevice() {
         mqttUserCharacteristic = characteristicMqttUser;
 
         return Promise.all([
-            characteristicMainMode.readValue(), characteristicMainTmpa.readValue(), characteristicMainTmpb.readValue(),
+            characteristicMainMode.readValue(), characteristicMainTmpa.readValue(), characteristicMainTmpb.readValue(), characteristicMainTmpc.readValue(),
             characteristicWifiSsid.readValue(),
             characteristicMqttHost.readValue(), characteristicMqttPort.readValue(), characteristicMqttUser.readValue(),
         ]);
     })
     .then(([
-        valueMainMode, valueMainTmpa, valueMainTmpb,
+        valueMainMode, valueMainTmpa, valueMainTmpb, valueMainTmpc,
         valueWifiSsid,
         valueMqttHost, valueMqttPort, valueMqttUser,
     ]) => {
@@ -209,6 +215,7 @@ function connectToDevice() {
         mainModeSelect.value = decoder.decode(valueMainMode);
         mainTmpaInput.value = decoder.decode(valueMainTmpa);
         mainTmpbInput.value = decoder.decode(valueMainTmpb);
+        mainTmpcInput.value = decoder.decode(valueMainTmpc);
         mainCard.classList.contains('visually-hidden') && mainCard.classList.remove('visually-hidden');
 
         wifiSsidInput.value = decoder.decode(valueWifiSsid);
